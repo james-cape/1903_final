@@ -1,9 +1,7 @@
 class Curator
 
   attr_reader :photographs,
-              :artists,
-              :csv_photographs,
-              :csv_artists
+              :artists
 
   def initialize
     @photographs = []
@@ -19,7 +17,6 @@ class Curator
   end
 
   def find_artist_by_id(id)
-    # binding.pry
     @artists.find do |artist|
       artist.id == id
     end
@@ -82,7 +79,15 @@ class Curator
     @photographs.find_all do |photo|
       range.include?(photo.year)
     end.flatten
-    # binding.pry
+  end
+
+  def artists_photographs_by_age(artist)
+    age_at_time_of_photos = Hash.new(0)
+    find_photographs_by_artist(artist).each do |photo|
+      artist_age = photo.year - artist.born.to_i
+      age_at_time_of_photos[artist_age] = photo.name
+    end
+    age_at_time_of_photos
   end
 
 
